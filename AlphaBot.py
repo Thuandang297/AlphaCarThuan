@@ -80,18 +80,25 @@ class AlphaBot(object):
         self.PWMB.start(65)
  
     def SR04(self):
-        trigs = [self.TRIG_5,self.TRIG_4,self.TRIG_3, self.TRIG_2, self.TRIG_1]
-        echos = [self.ECHO_5,self.ECHO_4,self.ECHO_3, self.ECHO_2, self.ECHO_1]
+        trigs = [self.TRIG_5, self.TRIG_4,self.TRIG_3, self.TRIG_2, self.TRIG_1]
+        echos = [self.ECHO_5, self.ECHO_4,self.ECHO_3, self.ECHO_2, self.ECHO_1]
         distances = [100, 100, 100,100,100]
-        
         for i in range(5):
             trig = trigs[i]
             echo = echos[i]
+            #GPIO.output(self.TRIG_1, GPIO.LOW)
+            #GPIO.output(self.TRIG_2, GPIO.LOW)
             GPIO.output(trig, GPIO.LOW)
             time.sleep(0.01)
+            #GPIO.output(self.TRIG_1, GPIO.HIGH)
+            #GPIO.output(self.TRIG_2, GPIO.HIGH)
             GPIO.output(trig, GPIO.HIGH)
             time.sleep(0.00001)
+            #GPIO.output(self.TRIG_1, GPIO.LOW)
+            #GPIO.output(self.TRIG_2, GPIO.LOW)
             GPIO.output(trig, GPIO.LOW)
+
+            #start = time.time()
             while GPIO.input(echo) == 0:
                 start = time.time()
             while GPIO.input(echo) == 1:
@@ -101,9 +108,8 @@ class AlphaBot(object):
             # v (cm/s)
             distance = elapsed * 34000
             distance = distance / 2
-            distances[i] = distance
-            print(distance)
-        return [100,100,100,100,100];
+            distances[i] = distance 
+        return distances
 
     def MPU(self):
         time.sleep(0.2)
