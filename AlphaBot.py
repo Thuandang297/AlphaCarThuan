@@ -98,9 +98,11 @@ class AlphaBot(object):
             #GPIO.output(self.TRIG_2, GPIO.LOW)
             GPIO.output(trig, GPIO.LOW)
 
-            #start = time.time()
+            start = time.time()
             while GPIO.input(echo) == 0:
                 start = time.time()
+
+            stop = time.time()
             while GPIO.input(echo) == 1:
                 stop = time.time()
             # calculator
