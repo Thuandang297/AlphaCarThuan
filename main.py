@@ -130,4 +130,5 @@ finally:
     screen.keypad(0);
     curses.echo()
     curses.endwin()
+        # Perform cleanup operations, if needed
     GPIO.cleanup()
