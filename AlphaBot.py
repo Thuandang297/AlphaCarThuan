@@ -75,42 +75,38 @@ class AlphaBot(object):
  
         self.PWMB = GPIO.PWM(self.ENB,500)
  
-        self.PWMA.start(65)
+        self.PWMA.start(40)
  
-        self.PWMB.start(65)
+        self.PWMB.start(40)
  
     def SR04(self):
-        trigs = [self.TRIG_5, self.TRIG_4,self.TRIG_3, self.TRIG_2, self.TRIG_1]
-        echos = [self.ECHO_5, self.ECHO_4,self.ECHO_3, self.ECHO_2, self.ECHO_1]
-        distances = [100, 100, 100,100,100]
+        trigs=  [self.TRIG_3, self.TRIG_4, self.TRIG_2, self.TRIG_5, self.TRIG_1]
+        echos= [self.ECHO_3, self.ECHO_4, self.ECHO_2, self.ECHO_5, self.ECHO_1]
+        distances = [100, 100, 100, 100, 100]
         for i in range(5):
+            #print("i:::",i) 
             trig = trigs[i]
             echo = echos[i]
-            #GPIO.output(self.TRIG_1, GPIO.LOW)
-            #GPIO.output(self.TRIG_2, GPIO.LOW)
             GPIO.output(trig, GPIO.LOW)
             time.sleep(0.01)
-            #GPIO.output(self.TRIG_1, GPIO.HIGH)
-            #GPIO.output(self.TRIG_2, GPIO.HIGH)
             GPIO.output(trig, GPIO.HIGH)
             time.sleep(0.00001)
-            #GPIO.output(self.TRIG_1, GPIO.LOW)
-            #GPIO.output(self.TRIG_2, GPIO.LOW)
             GPIO.output(trig, GPIO.LOW)
 
-            start = time.time()
             while GPIO.input(echo) == 0:
                 start = time.time()
-
-            stop = time.time()
             while GPIO.input(echo) == 1:
                 stop = time.time()
+
             # calculator
             elapsed = stop - start
+
+            stop = time.time()
             # v (cm/s)
             distance = elapsed * 34000
             distance = distance / 2
-            distances[i] = distance 
+            distances[i] = distance - 2 
+
         return distances
 
     def MPU(self):
@@ -123,6 +119,8 @@ class AlphaBot(object):
         
 
     def forward(self):
+        self.PWMA.start(40)
+        self.PWMB.start(40)
  
         GPIO.output(self.IN1,GPIO.HIGH) # Tien_phai
  
@@ -159,19 +157,25 @@ class AlphaBot(object):
  
  
     def right(self):
+
+        self.PWMA.start(99)
+        self.PWMB.start(99)
  
-        GPIO.output(self.IN1,GPIO.HIGH)
+        GPIO.output(self.IN1,GPIO.LOW)
  
         GPIO.output(self.IN2,GPIO.LOW)
  
-        GPIO.output(self.IN3,GPIO.LOW)
+        GPIO.output(self.IN3,GPIO.HIGH)
  
-        GPIO.output(self.IN4,GPIO.HIGH)
+        GPIO.output(self.IN4,GPIO.LOW)
  
  
  
     def left(self):
  
+        self.PWMA.start(99)
+        self.PWMB.start(99)
+
         GPIO.output(self.IN1,GPIO.HIGH)
  
         GPIO.output(self.IN2,GPIO.LOW)
